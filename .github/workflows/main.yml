@@ -1,0 +1,23 @@
+name: User Actions
+on:
+  workflow_dispatch # Change to `push` for automatic runs on code push s
+
+env:
+  AWS_REGION: eu-north-1
+  ECR_REPOSITORY: dev-fplarache-smartlib-user
+  # EKS_CLUSTER: user-eks
+
+jobs:
+  Testing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+
+      - name: Maven test
+        run:  mvn test
+        timeout-minutes: 10
+
+      - name: Checkstyle
+        run: mvn checkstyle:checkstyle
+
